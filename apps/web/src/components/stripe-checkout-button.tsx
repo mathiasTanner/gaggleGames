@@ -11,25 +11,26 @@ export function StripeCheckoutButton() {
     setError(null);
 
     try {
-     const res = await fetch("/api/stripe/checkout", { method: "POST" });
-     const text = await res.text();
+      const res = await fetch("/api/stripe/checkout", { method: "POST" });
+      const text = await res.text();
 
-     let data: { url?: string; error?: string } = {};
-     try {
+      let data: { url?: string; error?: string } = {};
+      try {
         data = JSON.parse(text);
-     } catch (e) {
-        // not JSON; keep raw text for debugging
+      } catch {
         data = { error: text };
-     }
-
+      }
 
       if (!res.ok || !data.url) {
-        throw new Error(data.error ?? `Failed to create checkout session (status ${res.status})`);
+        throw new Error(
+          data.error ?? `Failed to create checkout session (status ${res.status})`
+        );
       }
 
       window.location.href = data.url;
-    } catch (e: any) {
-      setError(e.message ?? "Something went wrong");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Something went wrong";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -49,7 +50,7 @@ export function StripeCheckoutButton() {
       >
         {loading ? "Redirecting..." : "Start Checkout (Stripe)"}
       </button>
-      {error ? <p style={{ marginTop: 8 }}>⚠️ {error}</p> : null}
+      {error ? <p style={{ marginTop: 8 }}>Warning: {error}</p> : null}
     </div>
   );
 }
