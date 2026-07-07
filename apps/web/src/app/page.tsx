@@ -20,7 +20,7 @@ const featuredValues = [
 export default function Home() {
   return (
     <>
-      <section className="relative min-h-[calc(100dvh-4rem)] overflow-hidden bg-[#132a2e] text-white">
+      <section className="relative min-h-[calc(100dvh-4rem)] overflow-hidden bg-primary text-white">
         <Image
           src="/gaggle-game-hero.png"
           alt="Board game pieces, cards, dice, and tokens on a warm tabletop"
@@ -33,7 +33,7 @@ export default function Home() {
 
         <Container className="relative flex min-h-[calc(100dvh-4rem)] items-center py-16">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#ffd166]">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">
               Board games for lively tables
             </p>
             <h1 className="mt-5 text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">
