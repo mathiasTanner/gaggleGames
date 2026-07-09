@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Moon, Sun } from "lucide-react";
 
 type Theme = "light" | "dark";
@@ -11,24 +10,12 @@ function applyTheme(theme: Theme) {
   else root.classList.remove("dark");
 }
 
-function getInitialTheme(): Theme {
-  if (typeof window === "undefined") return "light";
-
-  const stored = localStorage.getItem("theme");
-  if (stored === "light" || stored === "dark") return stored;
-
-  const prefersDark =
-    window.matchMedia?.("(prefers-color-scheme: dark)")?.matches ?? false;
-
-  return prefersDark ? "dark" : "light";
-}
-
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
-
   const toggle = () => {
-    const nextTheme: Theme = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
+    const nextTheme: Theme = document.documentElement.classList.contains("dark")
+      ? "light"
+      : "dark";
+
     localStorage.setItem("theme", nextTheme);
     applyTheme(nextTheme);
   };
@@ -41,11 +28,8 @@ export default function ThemeToggle() {
       aria-label="Toggle theme"
       title="Toggle theme"
     >
-      {theme === "dark" ? (
-        <Moon className="size-4" aria-hidden="true" />
-      ) : (
-        <Sun className="size-4" aria-hidden="true" />
-      )}
+      <Sun className="size-4 dark:hidden" aria-hidden="true" />
+      <Moon className="hidden size-4 dark:block" aria-hidden="true" />
     </button>
   );
 }
