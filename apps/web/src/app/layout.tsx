@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/site/Header";
 import Footer from "@/components/site/Footer";
+import { getMediaUrl } from "@/lib/strapi/media";
+import { getSiteSettings } from "@/lib/strapi/siteSettings";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,11 +16,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Gaggle Game",
-  description:
-    "A board game studio and shop for lively tables, clever turns, and memorable game nights.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const siteSettings = await getSiteSettings();
+  const faviconUrl = getMediaUrl(siteSettings.favicon?.url);
+
+  return {
+    title: siteSettings.defaultSeoTitle,
+    description: siteSettings.defaultSeoDescription,
+    icons: faviconUrl ? { icon: faviconUrl } : undefined,
+  };
+}
 
 export default function RootLayout({
   children,

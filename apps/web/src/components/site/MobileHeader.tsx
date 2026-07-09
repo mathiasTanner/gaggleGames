@@ -2,22 +2,30 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import type { NavItem } from "@/components/site/navigation";
+import type { NavItem } from "@/lib/strapi/navigation";
 import BrandMark from "@/components/site/BrandMark";
 import MobileNav from "@/components/site/MobileNav";
 import ThemeToggle from "@/components/site/ThemeToggle";
 
 type MobileHeaderProps = {
   items: NavItem[];
+  logoUrl?: string;
+  logoAlt?: string;
+  siteName: string;
 };
 
-export default function MobileHeader({ items }: MobileHeaderProps) {
+export default function MobileHeader({
+  items,
+  logoUrl,
+  logoAlt,
+  siteName,
+}: MobileHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="md:hidden">
       <div className="flex items-center justify-between gap-4">
-        <BrandMark />
+        <BrandMark logoUrl={logoUrl} logoAlt={logoAlt} siteName={siteName} />
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
@@ -35,8 +43,8 @@ export default function MobileHeader({ items }: MobileHeaderProps) {
         >
           {items.map((item) => (
             <Link
-              key={item.href}
-              href={item.href}
+              key={item.href ?? item.label}
+              href={item.href ?? "#"}
               className="rounded px-2 py-2 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
               onClick={() => setMenuOpen(false)}
             >

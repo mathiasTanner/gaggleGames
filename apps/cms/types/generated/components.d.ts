@@ -1,5 +1,42 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface HomeFeatureCard extends Struct.ComponentSchema {
+  collectionName: 'components_home_feature_cards';
+  info: {
+    displayName: 'home.featureCard';
+    icon: 'grid';
+  };
+  attributes: {
+    text: Schema.Attribute.Text;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface NavigationNavItem extends Struct.ComponentSchema {
+  collectionName: 'components_navigation_nav_items';
+  info: {
+    displayName: 'nav.link';
+    icon: 'bulletList';
+  };
+  attributes: {
+    href: Schema.Attribute.String & Schema.Attribute.Required;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface NavigationNavMenuItem extends Struct.ComponentSchema {
+  collectionName: 'components_navigation_nav_menu_items';
+  info: {
+    displayName: 'nav.menuItem';
+    icon: 'bulletList';
+  };
+  attributes: {
+    children: Schema.Attribute.Component<'navigation.nav-item', true>;
+    href: Schema.Attribute.String;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SharedMedia extends Struct.ComponentSchema {
   collectionName: 'components_shared_media';
   info: {
@@ -50,6 +87,18 @@ export interface SharedSeo extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedSharedLink extends Struct.ComponentSchema {
+  collectionName: 'components_shared_shared_links';
+  info: {
+    displayName: 'shared.link';
+    icon: 'hashtag';
+  };
+  attributes: {
+    href: Schema.Attribute.String & Schema.Attribute.Required;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SharedSlider extends Struct.ComponentSchema {
   collectionName: 'components_shared_sliders';
   info: {
@@ -65,10 +114,14 @@ export interface SharedSlider extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'home.feature-card': HomeFeatureCard;
+      'navigation.nav-item': NavigationNavItem;
+      'navigation.nav-menu-item': NavigationNavMenuItem;
       'shared.media': SharedMedia;
       'shared.quote': SharedQuote;
       'shared.rich-text': SharedRichText;
       'shared.seo': SharedSeo;
+      'shared.shared-link': SharedSharedLink;
       'shared.slider': SharedSlider;
     }
   }

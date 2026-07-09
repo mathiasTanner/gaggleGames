@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_home_feature_cards",
+  "info": {
+    "displayName": "home.featureCard",
+    "icon": "grid"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "text": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}
