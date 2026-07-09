@@ -1,18 +1,21 @@
+name: gaggle-games
+
 services:
   db:
     image: postgres:16
-    container_name: project-base-db
+    container_name: gaggle-games-db
     environment:
       POSTGRES_DB: strapi
       POSTGRES_USER: strapi
       POSTGRES_PASSWORD: strapi
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - gaggle_games_db_data:/var/lib/postgresql/data
 
   cms:
     image: node:20-bullseye
+    container_name: gaggle-games-cms
     working_dir: /app
     command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
     volumes:
@@ -27,24 +30,32 @@ services:
       DATABASE_SSL: "false"
       HOST: 0.0.0.0
       PORT: 1337
+      APP_KEYS: ${APP_KEYS:-gaggle-dev-key-1,gaggle-dev-key-2}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET:-gaggle-dev-admin-secret}
+      JWT_SECRET: ${JWT_SECRET:-gaggle-dev-jwt-secret}
+      API_TOKEN_SALT: ${API_TOKEN_SALT:-gaggle-dev-api-token-salt}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT:-gaggle-dev-transfer-token-salt}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-12345678901234567890123456789012}
     ports:
-      - "1337:1337"
+      - "1338:1337"
     depends_on:
       - db
 
   web:
     image: node:20-bullseye
+    container_name: gaggle-games-web
     working_dir: /app
     command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
     volumes:
       - ./apps/web:/app
     environment:
-      NEXT_PUBLIC_CMS_URL: http://localhost:1337
+      NEXT_PUBLIC_CMS_URL: http://localhost:1338
+      CMS_URL: http://cms:1337
       CI: "true"
     ports:
-      - "3000:3000"
+      - "3001:3000"
     depends_on:
       - cms
 
 volumes:
-  db_data:
+  gaggle_games_db_data:
