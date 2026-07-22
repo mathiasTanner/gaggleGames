@@ -23,6 +23,7 @@ const cmsImageRemotePattern = getCmsImageRemotePattern();
 const nextConfig: NextConfig = {
   reactCompiler: true,
   images: {
+    dangerouslyAllowLocalIP: true,
     remotePatterns: [
       {
         protocol: "http",
