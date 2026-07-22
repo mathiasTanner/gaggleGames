@@ -34,28 +34,36 @@ export default async function AboutPage() {
 
         <Container className="relative flex min-h-[460px] items-end py-14">
           <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">
-              {page.eyebrow}
-            </p>
+            {page.eyebrow ? (
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">
+                {page.eyebrow}
+              </p>
+            ) : null}
             <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">
               {page.title}
             </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-[#f5e7d3]">
-              {page.subtitle}
-            </p>
+            {page.subtitle ? (
+              <p className="mt-5 max-w-2xl text-lg leading-8 text-[#f5e7d3]">
+                {page.subtitle}
+              </p>
+            ) : null}
           </div>
         </Container>
       </section>
 
       <Container className="py-14">
         <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
-          <h2 className="text-3xl font-semibold tracking-tight">
-            {page.introTitle}
-          </h2>
+          {page.introTitle ? (
+            <h2 className="text-3xl font-semibold tracking-tight">
+              {page.introTitle}
+            </h2>
+          ) : null}
           <div className="space-y-8">
-            <div className="whitespace-pre-line text-base leading-8 text-muted-foreground">
-              {page.introText}
-            </div>
+            {page.introText ? (
+              <div className="whitespace-pre-line text-base leading-8 text-muted-foreground">
+                {page.introText}
+              </div>
+            ) : null}
             <ContentBlocks blocks={page.blocks} />
           </div>
         </div>

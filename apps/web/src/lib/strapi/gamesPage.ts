@@ -46,25 +46,19 @@ function normalizeGamesPage(json: StrapiGamesPageResponse): GamesPage {
   const heroImageUrl = getMediaUrl(asString(heroImage?.url));
 
   return {
-    eyebrow: asString(raw.eyebrow, fallbackGamesPage.eyebrow),
-    title: asString(raw.title, fallbackGamesPage.title),
-    subtitle: asString(raw.subtitle, fallbackGamesPage.subtitle),
+    eyebrow: asString(raw.eyebrow),
+    title: asString(raw.title),
+    subtitle: asString(raw.subtitle),
     heroImage: heroImageUrl
       ? {
           url: heroImageUrl,
           alternativeText: asString(heroImage?.alternativeText),
         }
-      : fallbackGamesPage.heroImage,
-    introTitle: asString(raw.introTitle, fallbackGamesPage.introTitle),
-    introText: asString(raw.introText, fallbackGamesPage.introText),
-    featuredProductsTitle: asString(
-      raw.featuredProductsTitle,
-      fallbackGamesPage.featuredProductsTitle
-    ),
-    featuredProductsText: asString(
-      raw.featuredProductsText,
-      fallbackGamesPage.featuredProductsText
-    ),
+      : undefined,
+    introTitle: asString(raw.introTitle),
+    introText: asString(raw.introText),
+    featuredProductsTitle: asString(raw.featuredProductsTitle),
+    featuredProductsText: asString(raw.featuredProductsText),
     blocks: normalizeBlocks(raw.blocks),
   };
 }

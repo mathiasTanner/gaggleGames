@@ -41,17 +41,17 @@ function normalizeAboutPage(json: StrapiAboutResponse): AboutPage {
   const heroImageUrl = getMediaUrl(asString(heroImage?.url));
 
   return {
-    eyebrow: asString(raw.eyebrow, fallbackAboutPage.eyebrow),
-    title: asString(raw.title, fallbackAboutPage.title),
-    subtitle: asString(raw.subtitle, fallbackAboutPage.subtitle),
+    eyebrow: asString(raw.eyebrow),
+    title: asString(raw.title),
+    subtitle: asString(raw.subtitle),
     heroImage: heroImageUrl
       ? {
           url: heroImageUrl,
           alternativeText: asString(heroImage?.alternativeText),
         }
-      : fallbackAboutPage.heroImage,
-    introTitle: asString(raw.introTitle, fallbackAboutPage.introTitle),
-    introText: asString(raw.introText, fallbackAboutPage.introText),
+      : undefined,
+    introTitle: asString(raw.introTitle),
+    introText: asString(raw.introText),
     blocks: normalizeBlocks(raw.blocks),
   };
 }
