@@ -45,12 +45,6 @@ export default async function Header() {
 
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <Link
-              href={siteSettings.headerCtaHref}
-              className="inline-flex h-10 items-center justify-center rounded bg-accent px-4 text-sm font-semibold text-accent-foreground transition hover:bg-[var(--color-accent-hover)]"
-            >
-              {siteSettings.headerCtaLabel}
-            </Link>
           </div>
         </div>
       </Container>
