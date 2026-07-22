@@ -59,7 +59,7 @@ function normalizeAboutPage(json: StrapiAboutResponse): AboutPage {
 export async function getAboutPage(): Promise<AboutPage> {
   try {
     const json = await strapiFetch<StrapiAboutResponse>(
-      "/about?populate[heroImage]=*&populate[blocks][populate]=*",
+      "/about?populate=*",
       { revalidate: 60 }
     );
     return normalizeAboutPage(json);

@@ -66,7 +66,7 @@ function normalizeGamesPage(json: StrapiGamesPageResponse): GamesPage {
 export async function getGamesPage(): Promise<GamesPage> {
   try {
     const json = await strapiFetch<StrapiGamesPageResponse>(
-      "/games-page?populate[heroImage]=*&populate[blocks][populate]=*",
+      "/games-page?populate=*",
       { revalidate: 60 }
     );
     return normalizeGamesPage(json);
