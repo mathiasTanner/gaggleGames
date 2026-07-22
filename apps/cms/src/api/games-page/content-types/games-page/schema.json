@@ -1,23 +1,23 @@
 {
   "kind": "singleType",
-  "collectionName": "abouts",
+  "collectionName": "games_pages",
   "info": {
-    "singularName": "about",
-    "pluralName": "abouts",
-    "displayName": "About",
-    "description": "Manage the Gaggle Game about page"
+    "singularName": "games-page",
+    "pluralName": "games-pages",
+    "displayName": "Games Page",
+    "description": "Manage the editorial games page"
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
     "title": {
       "type": "string",
       "required": true
-    },
-    "eyebrow": {
-      "type": "string"
     },
     "subtitle": {
       "type": "text"
@@ -32,6 +32,12 @@
     },
     "introText": {
       "type": "richtext"
+    },
+    "featuredProductsTitle": {
+      "type": "string"
+    },
+    "featuredProductsText": {
+      "type": "text"
     },
     "blocks": {
       "type": "dynamiczone",

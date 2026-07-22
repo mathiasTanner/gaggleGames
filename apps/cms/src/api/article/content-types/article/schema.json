@@ -4,8 +4,8 @@
   "info": {
     "singularName": "article",
     "pluralName": "articles",
-    "displayName": "Article",
-    "description": "Create your blog content"
+    "displayName": "News Article",
+    "description": "Manage news posts for Gaggle Game"
   },
   "options": {
     "draftAndPublish": true
@@ -17,7 +17,10 @@
     },
     "description": {
       "type": "text",
-      "maxLength": 80
+      "maxLength": 240
+    },
+    "publishedOn": {
+      "type": "date"
     },
     "slug": {
       "type": "uid",
