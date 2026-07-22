@@ -3,7 +3,7 @@ import Link from "next/link";
 import Container from "@/components/layout/Container";
 import ContentBlocks from "@/components/content/ContentBlocks";
 import { getGamesPage } from "@/lib/strapi/gamesPage";
-import { formatPrice, getProducts } from "@/lib/strapi/products";
+import { getProducts } from "@/lib/strapi/products";
 
 export const dynamic = "force-dynamic";
 
@@ -131,9 +131,6 @@ export default async function GamesPage() {
                     >
                       View store page
                     </Link>
-                    <span className="text-sm font-semibold text-muted-foreground">
-                      {formatPrice(product.priceCents, product.currency)}
-                    </span>
                   </div>
                 </div>
               </article>
