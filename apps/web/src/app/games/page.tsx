@@ -3,12 +3,7 @@ import Link from "next/link";
 import Container from "@/components/layout/Container";
 import ContentBlocks from "@/components/content/ContentBlocks";
 import { getGamesPage } from "@/lib/strapi/gamesPage";
-import {
-  formatPrice,
-  getProducts,
-  getStockLabel,
-  isPurchasable,
-} from "@/lib/strapi/products";
+import { formatPrice, getProducts } from "@/lib/strapi/products";
 
 export const dynamic = "force-dynamic";
 
@@ -93,54 +88,55 @@ export default async function GamesPage() {
             </div>
           ) : null}
 
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 space-y-8">
             {products.map((product) => (
-              <Link
+              <article
                 key={product.slug}
-                href={`/store/${product.slug}`}
-                className="group overflow-hidden rounded border border-border bg-card text-card-foreground shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                className="grid overflow-hidden rounded border border-border bg-card text-card-foreground shadow-sm lg:grid-cols-[0.9fr_1.1fr]"
               >
-                <div className="relative aspect-[4/3] bg-muted">
+                <div className="relative min-h-[280px] bg-muted lg:min-h-[420px]">
                   {product.coverImage ? (
                     <Image
                       src={product.coverImage.url}
                       alt={product.coverImage.alternativeText || product.title}
                       fill
-                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                      className="object-cover transition group-hover:scale-[1.02]"
+                      sizes="(min-width: 1024px) 44vw, 100vw"
+                      className="object-cover"
                     />
                   ) : null}
                 </div>
-                <div className="p-5">
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="text-lg font-semibold tracking-tight">
-                      {product.title}
-                    </h3>
-                    <span className="whitespace-nowrap text-sm font-bold text-primary">
-                      {formatPrice(product.priceCents, product.currency)}
-                    </span>
-                  </div>
+                <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
+                  <p className="text-sm font-semibold uppercase tracking-[0.16em] text-primary">
+                    Gaggle game
+                  </p>
+                  <h3 className="mt-3 text-3xl font-semibold tracking-tight">
+                    {product.title}
+                  </h3>
                   {product.shortDescription ? (
-                    <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                    <p className="mt-4 text-lg leading-8 text-muted-foreground">
                       {product.shortDescription}
                     </p>
                   ) : null}
-                  <div className="mt-4 flex items-center justify-between gap-3 text-sm">
-                    <span
-                      className={
-                        isPurchasable(product)
-                          ? "font-medium text-success"
-                          : "font-medium text-muted-foreground"
-                      }
+
+                  {product.description ? (
+                    <div className="mt-5 whitespace-pre-line text-sm leading-7 text-muted-foreground">
+                      {product.description}
+                    </div>
+                  ) : null}
+
+                  <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <Link
+                      href={`/store/${product.slug}`}
+                      className="inline-flex h-11 items-center justify-center rounded bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:bg-[var(--color-primary-hover)]"
                     >
-                      {getStockLabel(product.stockStatus)}
-                    </span>
-                    <span className="font-semibold text-foreground">
-                      View game
+                      View store page
+                    </Link>
+                    <span className="text-sm font-semibold text-muted-foreground">
+                      {formatPrice(product.priceCents, product.currency)}
                     </span>
                   </div>
                 </div>
-              </Link>
+              </article>
             ))}
           </div>
         </Container>
