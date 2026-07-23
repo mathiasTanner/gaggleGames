@@ -1,5 +1,5 @@
 import type Stripe from "stripe";
-import { sendResendEmail } from "./resend";
+import { parseSender, sendBrevoEmail } from "./brevo";
 
 type OrderLineItem = {
   name: string;
@@ -178,19 +178,19 @@ export async function sendOrderConfirmationEmail(params: {
   const items = mapLineItems(lineItems);
   const subject = `Gaggle Games order ${orderNumber}`;
 
-  const result = await sendResendEmail(
+  const result = await sendBrevoEmail(
     {
-      from,
-      to,
+      sender: parseSender(from),
+      to: [{ email: to }],
       subject,
-      html: buildHtmlEmail({ orderNumber, session, items }),
-      text: buildTextEmail({ orderNumber, session, items }),
-      tags: [
-        { name: "category", value: "order_confirmation" },
-        { name: "order", value: orderNumber },
-      ],
-    },
-    `order-confirmation-${session.id}`
+      htmlContent: buildHtmlEmail({ orderNumber, session, items }),
+      textContent: buildTextEmail({ orderNumber, session, items }),
+      tags: ["order_confirmation", "gaggle_games"],
+      headers: {
+        "X-Gaggle-Order": orderNumber,
+        "X-Stripe-Session": session.id,
+      },
+    }
   );
 
   if (!result.ok) return result;

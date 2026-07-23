@@ -18,17 +18,17 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Order Confirmations
 
-Stripe checkout completion emails are sent from the Stripe webhook route with Resend.
+Stripe checkout completion emails are sent from the Stripe webhook route with Brevo.
 
 Add these values to `apps/web/.env.local`:
 
 ```bash
-RESEND_API_KEY=
+BREVO_API_KEY=
 ORDER_CONFIRMATION_FROM_EMAIL="Gaggle Games <orders@your-domain.com>"
 STRIPE_WEBHOOK_SECRET=
 ```
 
-`ORDER_CONFIRMATION_FROM_EMAIL` must use a domain verified in Resend. The webhook sends one transactional confirmation per completed checkout session and uses the Stripe session id as the Resend idempotency key.
+`ORDER_CONFIRMATION_FROM_EMAIL` must use a sender/domain verified in Brevo. The webhook sends one transactional confirmation per paid checkout session.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
