@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
+import { sendOrderConfirmationEmail } from "@/lib/email/orderConfirmation";
 import { getStripe } from "@/lib/stripe";
 
 export async function POST(req: Request) {
@@ -30,9 +31,15 @@ export async function POST(req: Request) {
     );
   }
 
+  const stripe = getStripe();
+
   switch (event.type) {
     case "checkout.session.completed":
-      console.log("Checkout completed", event.data.object.id);
+      await handleCheckoutCompleted(stripe, event.data.object);
+      break;
+
+    case "checkout.session.async_payment_succeeded":
+      await handleCheckoutCompleted(stripe, event.data.object);
       break;
 
     case "invoice.paid":
@@ -44,4 +51,39 @@ export async function POST(req: Request) {
   }
 
   return NextResponse.json({ received: true });
+}
+
+async function handleCheckoutCompleted(
+  stripe: Stripe,
+  session: Stripe.Checkout.Session
+) {
+  if (session.payment_status !== "paid") {
+    console.log("Checkout completed before payment was paid", {
+      sessionId: session.id,
+      paymentStatus: session.payment_status,
+    });
+    return;
+  }
+
+  const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
+    limit: 100,
+    expand: ["data.price.product"],
+  });
+
+  const result = await sendOrderConfirmationEmail({ session, lineItems });
+
+  if (result.ok) {
+    console.log("Order confirmation sent", {
+      orderNumber: result.orderNumber,
+      sessionId: session.id,
+      emailId: result.emailId,
+    });
+    return;
+  }
+
+  console.warn("Order confirmation not sent", {
+    sessionId: session.id,
+    reason: result.reason,
+    error: "error" in result ? result.error : undefined,
+  });
 }
