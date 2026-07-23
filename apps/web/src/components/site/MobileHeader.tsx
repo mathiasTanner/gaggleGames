@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { NavItem } from "@/lib/strapi/navigation";
+import CartLink from "@/components/cart/CartLink";
 import BrandMark from "@/components/site/BrandMark";
 import MobileNav from "@/components/site/MobileNav";
 import ThemeToggle from "@/components/site/ThemeToggle";
@@ -28,6 +29,7 @@ export default function MobileHeader({
         <BrandMark logoUrl={logoUrl} logoAlt={logoAlt} siteName={siteName} />
 
         <div className="flex items-center gap-2">
+          <CartLink />
           <ThemeToggle />
           <MobileNav
             menuOpen={menuOpen}

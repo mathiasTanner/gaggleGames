@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CartLink from "@/components/cart/CartLink";
 import Container from "@/components/layout/Container";
 import BrandMark from "@/components/site/BrandMark";
 import MobileHeader from "@/components/site/MobileHeader";
@@ -44,6 +45,7 @@ export default async function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <CartLink />
             <ThemeToggle />
           </div>
         </div>

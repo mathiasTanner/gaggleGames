@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import AddToCartButton from "@/components/cart/AddToCartButton";
 import Container from "@/components/layout/Container";
-import ProductCheckoutButton from "@/components/store/ProductCheckoutButton";
 import {
   formatPrice,
   getProductBySlug,
@@ -88,10 +88,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
           ) : null}
 
           <div className="mt-8">
-            <ProductCheckoutButton
+            <AddToCartButton
               productSlug={product.slug}
               disabled={!purchasable}
-              label={purchasable ? "Buy now" : "Currently unavailable"}
+              label={purchasable ? "Add to cart" : "Currently unavailable"}
             />
           </div>
         </section>

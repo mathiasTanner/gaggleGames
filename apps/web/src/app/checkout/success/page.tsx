@@ -1,9 +1,11 @@
 import Link from "next/link";
+import ClearCartOnMount from "@/components/cart/ClearCartOnMount";
 import Container from "@/components/layout/Container";
 
 export default function CheckoutSuccessPage() {
   return (
     <Container className="py-16">
+      <ClearCartOnMount />
       <div className="max-w-2xl">
         <p className="text-sm font-semibold uppercase tracking-[0.16em] text-success">
           Checkout complete
