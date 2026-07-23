@@ -3,6 +3,8 @@ name: Build and Push Docker Images
 on:
   push:
     branches: ["main"]
+  pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -19,6 +21,9 @@ jobs:
       - name: Set lowercase owner
         run: echo "OWNER_LOWER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
+      - name: Set lowercase repository name
+        run: echo "REPO_LOWER=$(echo '${{ github.event.repository.name }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -31,8 +36,8 @@ jobs:
         with:
           context: .
           file: ./apps/web/Dockerfile
-          push: true
-          tags: ghcr.io/${{ env.OWNER_LOWER }}/project-base-web:latest
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ghcr.io/${{ env.OWNER_LOWER }}/${{ env.REPO_LOWER }}-web:latest
 
 
       - name: Build and push CMS image
@@ -40,6 +45,5 @@ jobs:
         with:
           context: .
           file: ./apps/cms/Dockerfile
-          push: true
-          tags: ghcr.io/${{ env.OWNER_LOWER }}/project-base-cms:latest
-
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ghcr.io/${{ env.OWNER_LOWER }}/${{ env.REPO_LOWER }}-cms:latest
