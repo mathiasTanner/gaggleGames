@@ -24,10 +24,6 @@ function formatMoney(amount: number, currency: string) {
   }).format(amount / 100);
 }
 
-function getOrderNumber(session: Stripe.Checkout.Session) {
-  return `GG-${session.id.slice(-8).toUpperCase()}`;
-}
-
 function getCustomerEmail(session: Stripe.Checkout.Session) {
   return session.customer_details?.email ?? session.customer_email ?? null;
 }
@@ -159,10 +155,11 @@ function buildHtmlEmail(params: {
 }
 
 export async function sendOrderConfirmationEmail(params: {
+  orderNumber: string;
   session: Stripe.Checkout.Session;
   lineItems: Stripe.ApiList<Stripe.LineItem>;
 }) {
-  const { session, lineItems } = params;
+  const { orderNumber, session, lineItems } = params;
   const to = getCustomerEmail(session);
 
   if (!to) {
@@ -174,7 +171,6 @@ export async function sendOrderConfirmationEmail(params: {
     return { ok: false as const, reason: "not_configured" as const };
   }
 
-  const orderNumber = getOrderNumber(session);
   const items = mapLineItems(lineItems);
   const subject = `Gaggle Games order ${orderNumber}`;
 

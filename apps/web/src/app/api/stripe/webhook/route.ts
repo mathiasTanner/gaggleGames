@@ -2,6 +2,10 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { sendOrderConfirmationEmail } from "@/lib/email/orderConfirmation";
+import {
+  createOrUpdateOrderFromCheckout,
+  updateOrderEmailStatus,
+} from "@/lib/strapi/orders";
 import { getStripe } from "@/lib/stripe";
 
 export async function POST(req: Request) {
@@ -70,9 +74,29 @@ async function handleCheckoutCompleted(
     expand: ["data.price.product"],
   });
 
-  const result = await sendOrderConfirmationEmail({ session, lineItems });
+  const order = await createOrUpdateOrderFromCheckout({ session, lineItems });
+
+  if (order.emailStatus === "sent") {
+    console.log("Order confirmation already sent", {
+      orderNumber: order.orderNumber,
+      sessionId: session.id,
+    });
+    return;
+  }
+
+  const result = await sendOrderConfirmationEmail({
+    orderNumber: order.orderNumber,
+    session,
+    lineItems,
+  });
 
   if (result.ok) {
+    await updateOrderEmailStatus(order, {
+      emailStatus: "sent",
+      emailProviderMessageId: result.emailId,
+      emailError: null,
+    });
+
     console.log("Order confirmation sent", {
       orderNumber: result.orderNumber,
       sessionId: session.id,
@@ -81,7 +105,13 @@ async function handleCheckoutCompleted(
     return;
   }
 
+  await updateOrderEmailStatus(order, {
+    emailStatus: result.reason === "missing_customer_email" ? "skipped" : "failed",
+    emailError: "error" in result ? result.error : result.reason,
+  });
+
   console.warn("Order confirmation not sent", {
+    orderNumber: order.orderNumber,
     sessionId: session.id,
     reason: result.reason,
     error: "error" in result ? result.error : undefined,

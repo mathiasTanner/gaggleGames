@@ -122,7 +122,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
-  const clearCart = useCallback(() => setItems([]), []);
+  const clearCart = useCallback(() => {
+    try {
+      localStorage.removeItem(CART_STORAGE_KEY);
+    } catch {
+      // Ignore storage errors; React state is still the source of truth.
+    }
+
+    setItems([]);
+  }, []);
 
   const value = useMemo<CartContextValue>(
     () => ({

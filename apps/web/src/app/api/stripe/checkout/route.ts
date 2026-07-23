@@ -44,7 +44,10 @@ function normalizeCheckoutItems(payload: CheckoutRequest) {
 }
 
 export async function POST(req: Request) {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const appUrl =
+    req.headers.get("origin") ??
+    process.env.NEXT_PUBLIC_APP_URL ??
+    "http://localhost:3000";
 
   if (!process.env.STRIPE_SECRET_KEY) {
     return NextResponse.json(

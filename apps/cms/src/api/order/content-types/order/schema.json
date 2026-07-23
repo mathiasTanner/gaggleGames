@@ -1,0 +1,70 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "orderNumber": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "stripeSessionId": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "stripePaymentIntentId": {
+      "type": "string"
+    },
+    "customerEmail": {
+      "type": "email",
+      "required": true
+    },
+    "customerName": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["paid", "pending", "cancelled", "refunded"],
+      "required": true,
+      "default": "paid"
+    },
+    "currency": {
+      "type": "string",
+      "required": true,
+      "default": "CHF"
+    },
+    "amountTotalCents": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "items": {
+      "type": "json",
+      "required": true
+    },
+    "emailStatus": {
+      "type": "enumeration",
+      "enum": ["pending", "sent", "skipped", "failed"],
+      "required": true,
+      "default": "pending"
+    },
+    "emailProviderMessageId": {
+      "type": "string"
+    },
+    "emailError": {
+      "type": "text"
+    },
+    "paidAt": {
+      "type": "datetime"
+    }
+  }
+}
